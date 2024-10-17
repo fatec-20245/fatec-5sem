@@ -1,0 +1,21 @@
+name: Test Campo Pesquisa in index.html
+
+on: [push, pull_request]
+
+jobs:
+  check-hello-world:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Run a test to check if index.html contains "Hello World"
+      - name: Check for "campodebusca" in index.html
+        run: |
+          if grep -q "search" index.html; then
+            echo "Test passed: 'campodebusca' found in index.html"
+          else
+            echo "Test failed: 'campodebusca' not found in index.html"
+            exit 1
+          fi

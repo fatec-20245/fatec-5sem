@@ -1,0 +1,31 @@
+name: GPL
+
+on: [pull_request]
+
+jobs:
+  check-hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Check if LICENSE file exists
+      - name: Check for LICENSE file
+        run: |
+          if [ -f LICENSE ]; then
+            echo "LICENSE file found."
+          else
+            echo "Test failed: LICENSE file not found."
+            exit 1
+          fi
+
+      # Run a test to check if LICENSE contains "GLP"
+      - name: Check for "GPL" in LICENSE
+        run: |
+          if grep -q "GPL" LICENSE; then
+            echo "Test passed: 'GPL' found in LICENSE"
+          else
+            echo "Test failed: 'GPL' not found in LICENSE"
+            exit 1
+          fi

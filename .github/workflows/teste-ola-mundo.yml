@@ -1,0 +1,21 @@
+name: Olá Mundo
+
+on: [pull_request]
+
+jobs:
+  check-ola-mundo:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Run a test to check if index.html contains "Olá Mundo"
+      - name: Check for "Olá Mundo" in index.html
+        run: |
+          if grep -q "Olá Mundo" index.html; then
+            echo "Test passed: 'Olá Mundo' found in index.html"
+          else
+            echo "Test failed: 'Olá Mundo' not found in index.html"
+            exit 1
+          fi
