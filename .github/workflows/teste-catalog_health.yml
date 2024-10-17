@@ -22,17 +22,26 @@ jobs:
       - name: Start Flask app
         run: |
           python health.py &
-      
+
       - name: Wait for server to start
-        run: sleep 10
+        run: |
+          for i in {1..10}; do
+            if curl -s http://127.0.0.1:5000/catalog/health | grep -q '"status": "ok"'; then
+              echo "Flask app is running."
+              exit 0
+            fi
+            echo "Waiting for Flask app to start..."
+            sleep 1
+          done
+          echo "Flask app did not start in time."
+          exit 1
 
       - name: Test health check endpoint
         run: |
-          for i in {1..10}; do
-            if curl -s http://127.0.0.1:5000/catalog/health | grep -q ' "status": "ok" '; then
-              echo "Test passed: Health check endpoint returned 'status: ok'"
-              break
-            fi
+          response=$(curl -s http://127.0.0.1:5000/catalog/health)
+          if echo "$response" | grep -q '"status": "ok"'; then
+            echo "Test passed: Health check endpoint returned 'status: ok'"
+          else
             echo "Test failed: Health check endpoint did not return 'status: ok'"
-            sleep 1
-          done
+            exit 1
+          fi
