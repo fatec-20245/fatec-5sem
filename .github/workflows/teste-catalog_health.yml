@@ -26,13 +26,13 @@ jobs:
       - name: Wait for server to start
         run: sleep 10
 
-      - name: Wait for server to start
+      - name: Test health check endpoint
         run: |
           for i in {1..10}; do
-            if curl -s http://127.0.0.1:5000/catalog/health | grep -q '"status": "ok"'; then
-              echo "Flask app is up and running."
+            if curl -s http://127.0.0.1:5000/catalog/health | grep -q ' "status": "ok" '; then
+              echo "Test passed: Health check endpoint returned 'status: ok'"
               break
             fi
-            echo "Waiting for Flask app to start..."
+            echo "Test failed: Health check endpoint did not return 'status: ok'"
             sleep 1
           done
