@@ -1,0 +1,42 @@
+name: Test Flask App
+
+on: [push, pull_request]
+
+jobs:
+  test-flask-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flask
+
+      # Run the Flask app in the background
+      - name: Start Flask app
+        run: |
+          python health.py &
+      
+      # Wait for the server to start
+      - name: Wait for server to start
+        run: sleep 5
+
+      # Test the /catalog/health endpoint
+      - name: Test health check endpoint
+        run: |
+          if curl -s http://127.0.0.1:5000/catalog/health | grep -q '"status": "ok"'; then
+            echo "Test passed: Health check endpoint returned 'status: ok'"
+          else
+            echo "Test failed: Health check endpoint did not return 'status: ok'"
+            exit 1
+          fi
