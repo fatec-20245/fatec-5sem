@@ -1,0 +1,21 @@
+name: Test Hello World in index.html
+
+on: [push, pull_request]
+
+jobs:
+  check-hello-world:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Run a test to check if index.html contains "Hello World"
+      - name: Check for "Hello World" in style.css
+        run: |
+          if grep -q "background" style.css; then
+            echo "Test passed: 'background' found in style.css"
+          else
+            echo "Test failed: 'background' not found in style.css"
+            exit 1
+          fi

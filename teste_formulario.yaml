@@ -1,0 +1,21 @@
+name: testando_formulario
+
+on: [pull_request]
+
+jobs:
+  check-registration-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Run a test to check if pagina-formulario.html contains "Cadastro realizado com sucesso!"
+      - name: Check for success message in pagina-formulario.html
+        run: |
+          if grep -q "Cadastro realizado com sucesso!" pagina-formulario.html; then
+            echo "Test passed: Success message found in pagina-formulario.html"
+          else
+            echo "Test failed: Success message not found in pagina-formulario.html"
+            exit 1
+          fi
