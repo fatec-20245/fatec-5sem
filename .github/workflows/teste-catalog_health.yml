@@ -31,7 +31,7 @@ jobs:
       
       # Wait for the server to start
       - name: Wait for server to start
-        run: sleep 5
+        run: sleep 30
 
       # Test the /catalog/health endpoint
       - name: Test health check endpoint
