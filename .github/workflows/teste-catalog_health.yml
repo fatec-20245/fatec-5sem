@@ -26,6 +26,7 @@ jobs:
       # Run the Flask app in the background
       - name: Start Flask app
         run: |
+          cd catalog
           python health.py &
       
       # Wait for the server to start
