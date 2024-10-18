@@ -16,7 +16,9 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd auth
+          npm install
 
       - name: Run authentication tests
         run: npm test
