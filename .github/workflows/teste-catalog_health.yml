@@ -1,0 +1,53 @@
+name: Test Flask App
+
+on: [push, pull_request]
+
+jobs:
+  test-flask-app:
+    runs-on: ubuntu-latest  # Voltando ao padrão pois GitHub Actions não aceita 'python' diretamente
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Instalar dependências
+      - name: Install dependencies
+        run: |
+          cd catalog
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Rodar a aplicação Flask em segundo plano
+      - name: Start Flask app
+        run: |
+          cd catalog
+          nohup python health.py &  # Usando 'nohup' para manter o processo em segundo plano
+
+      # Verificar se o servidor está rodando
+      - name: Wait for server to start
+        run: |
+          for i in {1..10}; do
+            if curl -s http://127.0.0.1:5000/catalog/health > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
+
+      # Testar o endpoint /catalog/health
+      - name: Test health check endpoint
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/catalog/health)
+          if [ "$status" -eq 200 ]; then
+            echo "Test passed: Health check endpoint returned HTTP 200"
+          else
+            echo "Test failed: Health check endpoint did not return HTTP 200"
+            exit 1
+          fi
