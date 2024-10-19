@@ -29,11 +29,21 @@ jobs:
       - name: Start API
         run: |
           ./payment &
-          sleep 5
+
+      - name: Wait for server to start
+        run: |
+          for i in {1..10}; do
+            if curl -s http://127.0.0.1:8081/health > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
 
       - name: Test API response
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/health)
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8081/health)
           if [ "$response" != "200" ]; then
             echo "API is not returning 200 OK. Status: $response"
             exit 1
