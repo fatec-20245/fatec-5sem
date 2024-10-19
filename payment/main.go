@@ -11,13 +11,22 @@ type Pagamento struct {
 	Descricao string `json:"descricao"`
 }
 
+type HealthResponse struct {
+	Status string `json:"status"`
+}
+
 var pagamentos = []Pagamento{
 	{ID: 1, Descricao: "TESTE 1"},
 	{ID: 2, Descricao: "TESTE"},
 }
 
+var healthResponse = HealthResponse{
+	Status: "ok",
+}
+
 func main() {
 	http.HandleFunc("/", handleRoot)
+	http.HandleFunc("/health", handleHealth)
 	http.HandleFunc("/payment", handlePagamentos)
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
@@ -25,6 +34,12 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Bem-vindo à API de pagamentos!"))
 }
+
+func handleHealth(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(healthResponse)
+}
+
 func handlePagamentos(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
