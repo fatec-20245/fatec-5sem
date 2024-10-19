@@ -28,6 +28,7 @@ jobs:
 
       - name: Start API
         run: |
+          cd payment
           ./payment &
 
       - name: Wait for server to start
