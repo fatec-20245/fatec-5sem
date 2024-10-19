@@ -19,12 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20
-
-      - name: Install dependencies
-        run: |
-          cd payment
-          go mod tidy
+          go-version: 1.23.2
 
       - name: Build API
         run: go build -o payment ./payment
@@ -36,7 +31,7 @@ jobs:
 
       - name: Test API response
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/payment)
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/health)
           if [ "$response" != "200" ]; then
             echo "API is not returning 200 OK. Status: $response"
             exit 1
