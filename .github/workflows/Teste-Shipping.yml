@@ -41,14 +41,14 @@ jobs:
     - name: Run Spring Boot application
       run: ./gradlew bootRun
       
-    - name: Wait for server to start
-      run: sleep 20 
+      - name: Wait for server to start
+        run: sleep 20 
 
-    - name: Test health endpoint
-      run: |
-        curl -f http://localhost:8080/shipping/health | grep "Ok"
-      shell: bash
+      - name: Test health endpoint
+        run: |
+          curl -f http://localhost:8080/shipping/health | grep "Ok"
+        shell: bash
 
-    - name: Stop Spring Boot Application
-      run: |
-        kill $(lsof -t -i:8080)
+      - name: Stop Spring Boot Application
+        run: |
+          kill $(lsof -t -i:8080)
