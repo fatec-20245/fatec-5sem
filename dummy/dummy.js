@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Middleware para processar JSON
 app.use(express.json());
@@ -10,9 +10,11 @@ app.get('/dummy/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// Inicia o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+// Inicia o servidor apenas se este arquivo for executado diretamente
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Servidor rodando em http://localhost:${port}`);
+    });
+}
 
 module.exports = app;
