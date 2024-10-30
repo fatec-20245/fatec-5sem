@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3001;
+const port = 3000;
 
 // Middleware para processar JSON
 app.use(express.json());
@@ -14,3 +14,5 @@ app.get('/dummy/health', (req, res) => {
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
+module.exports = app;
