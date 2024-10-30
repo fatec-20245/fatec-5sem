@@ -18,10 +18,17 @@ jobs:
         with:
           node-version: '16'  # Substitua pela versão necessária
 
-      # Step 3: Install dependencies
+      # Step 3: Navigate to the dummy directory
+      - name: Navigate to dummy directory
+        working-directory: ./dummy
+        run: pwd
+
+      # Step 4: Install dependencies
       - name: Install dependencies
+        working-directory: ./dummy
         run: npm install
 
-      # Step 4: Run tests
+      # Step 5: Run tests
       - name: Run tests
+        working-directory: ./dummy
         run: npm test
