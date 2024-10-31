@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Endpoint de saúde
 app.get('/dummy/health', (req, res) => {
-    res.json({ status: 'ok' });
+    res.json({ status: 'not ok' });
 });
 
 // Inicia o servidor apenas se este arquivo for executado diretamente
