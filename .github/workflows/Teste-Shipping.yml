@@ -1,12 +1,6 @@
-name: Build and Run Spring Boot Application
+name: Build and Run Shipping Test
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [pull_request]
 
 jobs:
   build:
