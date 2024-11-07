@@ -33,11 +33,7 @@ jobs:
 
     - name: Grant execute permission for gradlew
       working-directory: ./shipping/shipping
-      run: chmod +x shipping/shipping/gradlew
-
-    - name: Access shipping directory
-      working-directory: ./shipping/shipping
-      run: cd shipping/shipping
+      run: chmod +x gradlew
 
     - name: Build with Gradle
       working-directory: ./shipping/shipping
