@@ -41,7 +41,7 @@ jobs:
 
       - name: Test health endpoint
         run: |
-          curl -f http://localhost:8080/shipping/health | grep "Ok"
+          curl -f http://localhost:8080/shipping/health | grep "OOk"
         shell: bash
 
       - name: Stop Spring Boot Application
