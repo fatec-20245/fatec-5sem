@@ -30,8 +30,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x shipping/shipping/gradlew
 
+    - name: listar diretório
+      run: ls -la
+    
     - name: Access shipping directory
       run: cd shipping/shipping
+
+    - name: listar diretório
+      run: ls -la
 
     - name: Build with Gradle
       run: ./gradlew build
