@@ -28,13 +28,16 @@ jobs:
             gradle-${{ runner.os }}
 
       - name: Grant execute permission for gradlew
+        working-directory: ./shipping/shipping
         run: chmod +x gradlew
 
       - name: Build with Gradle
+        working-directory: ./shipping/shipping
         run: ./gradlew build
 
       - name: Run Spring Boot application
-        run: ./gradlew bootRun
+        working-directory: ./shipping/shipping
+        run: java -jar build/libs/shipping-0.0.1-SNAPSHOT.jar
         
       - name: Wait for server to start
         run: sleep 20 
