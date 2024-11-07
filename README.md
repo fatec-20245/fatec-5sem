@@ -2,7 +2,9 @@
 <hr>
 <p align="center">Site desenvolvido para fins acadêmicos</p>
 
-## Tecnologias
-* HTML
-* CSS
-* txt
+<section class="Tecnologias">
+    ## Tecnologias
+    * HTML
+    * CSS
+    * txt
+</section>

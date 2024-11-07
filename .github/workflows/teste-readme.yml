@@ -1,0 +1,26 @@
+name: Test README for Technologies Section
+
+# Evento que dispara o workflow (pull_request)
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout do código
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Verificar se o README contém a seção de Tecnologias Utilizadas
+    - name: Check for Technologies description in README
+      run: |
+        if grep -iqE 'Tecnologias Utilizadas|Tecnologias|Tech Stack|Technologies Used' README.md; then
+          echo "Tecnologias encontradas no README.md."
+        else
+          echo "Erro: Descrição de tecnologias não encontrada no README.md."
+          exit 1
+        fi

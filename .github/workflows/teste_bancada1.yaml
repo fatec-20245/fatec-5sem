@@ -1,0 +1,21 @@
+name: Check CSS in HTML
+
+on: [pull_request]
+
+jobs:
+  check-css:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check for inline CSS in HTML
+        run: |
+          # Busca por <style> ou atributos style em arquivos .html
+          if grep -r -E "<style>|style=" *.html; then
+            echo "Inline CSS detected in HTML files. Please remove it.";
+            exit 1;
+          else
+            echo "No inline CSS found in HTML files.";
+          fi

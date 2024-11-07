@@ -1,4 +1,4 @@
-name: Test Hello World in index.html
+name: Test Campo Pesquisa in index.html
 
 on: [push, pull_request]
 
@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v3
 
       # Run a test to check if index.html contains "Hello World"
-      - name: Check for "Hello World" in index.html
+      - name: Check for "campodebusca" in index.html
         run: |
-          if grep -q "Hello World" index.html; then
-            echo "Test passed: 'Hello World' found in index.html"
+          if grep -q "search" index.html; then
+            echo "Test passed: 'campodebusca' found in index.html"
           else
-            echo "Test failed: 'Hello World' not found in index.html"
+            echo "Test failed: 'campodebusca' not found in index.html"
             exit 1
           fi
