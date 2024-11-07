@@ -1,4 +1,4 @@
-name: Build and Run Shipping Test
+name: Test Shipping api
 
 on: [push, pull_request]
 
