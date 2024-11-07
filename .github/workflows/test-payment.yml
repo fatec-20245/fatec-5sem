@@ -45,7 +45,9 @@ jobs:
       - name: Test API response
         run: |
           response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8081/health)
-          if [ "$response" != "200" ]; then
+          if [ "$response" == "200" ]; then
+            echo "Status: OK"
+          else
             echo "API is not returning 200 OK. Status: $response"
             exit 1
           fi
