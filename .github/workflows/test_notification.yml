@@ -3,10 +3,10 @@ name: notification test
 on:
   push:
     branches:
-      - main  # Roda os testes quando há push na branch principal
+      - main 
   pull_request:
     branches:
-      - main  # Roda os testes para pull requests na branch principal
+      - main 
 
 jobs:
   test:
@@ -21,14 +21,14 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # Defina a versão do Node.js que você está utilizando
+        node-version: '16'  
 
-    # 3. Instalar dependências
-    - name: Install dependencies
-      run: |
-        npm install
+# 3. Instalar dependências
+- name: Install dependencies
+  working-directory: ../../notification  
+  run: npm install
 
-    # 4. Rodar os testes
-    - name: Run tests
-      run: |
-        npm start
+# 4. Rodar os testes
+- name: Run tests
+  working-directory: ../../notification 
+  run: npm start
