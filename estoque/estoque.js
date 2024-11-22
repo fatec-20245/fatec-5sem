@@ -7,8 +7,10 @@ app.get('/estoque/health', (req, res) => {
     res.json({status: 'ok'}).status(200)
 })
 
-app.listen(port, () => {
-  console.log(`Aplicação iniciada e ouvindo na porta: ${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+      console.log(`Servidor rodando em http://localhost:${port}`);
+  });
+}
 
 module.exports = app
