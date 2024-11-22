@@ -1,0 +1,52 @@
+name: Test Cart
+
+on: [pull_request]
+
+jobs:
+  test-cart:
+    runs-on: ubuntu-latest  # Voltando ao padrão pois GitHub Actions não aceita 'python' diretamente
+
+    steps:
+      # Step1: Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Substitua pela versão necessária
+
+      # Step 3: Instalar dependências
+      - name: Install dependencies
+        run: |
+          cd cart
+          npm install
+
+      # Step 4: Rodar a aplicação Node.js em segundo plano
+      - name: Start Node.js
+        run: |
+          cd cart
+          nohup npm start &  # Usando 'nohup' para manter o processo em segundo plano
+
+      # Verificar se o servidor está rodando
+      - name: Wait for server to start
+        run: |
+          for i in {1..10}; do
+            if curl -s http://127.0.0.1:4000/cart/health > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
+
+      # Testar o endpoint /cart/health
+      - name: Test health check endpoint
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4000/cart/health)
+          if [ "$status" -eq 200 ]; then
+            echo "Test passed: Health check endpoint returned HTTP 200"
+          else
+            echo "Test failed: Health check endpoint did not return HTTP 200"
+            exit 1
+          fi
