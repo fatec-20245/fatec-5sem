@@ -1,0 +1,34 @@
+name: notification test
+
+on:
+  push:
+    branches:
+      - main  # Roda os testes quando há push na branch principal
+  pull_request:
+    branches:
+      - main  # Roda os testes para pull requests na branch principal
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checar o código
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Configurar o Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Defina a versão do Node.js que você está utilizando
+
+    # 3. Instalar dependências
+    - name: Install dependencies
+      run: |
+        npm install
+
+    # 4. Rodar os testes
+    - name: Run tests
+      run: |
+        npm start
