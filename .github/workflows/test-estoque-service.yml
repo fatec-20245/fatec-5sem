@@ -1,0 +1,29 @@
+name: Testing estoque service
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Substitua pela versão necessária
+
+      - name: Navigate to estoque directory
+        working-directory: ./estoque
+        run: pwd
+
+      - name: Install dependencies
+        working-directory: ./estoque
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./estoque
+        run: npm test
