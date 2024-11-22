@@ -42,12 +42,23 @@ jobs:
           done
 
       # Testar o endpoint /catalog/health
-      - name: Test health check endpoint
-        run: |
-          status=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/catalog/health)
-          if [ "$status" -eq 200 ]; then
-            echo "Test passed: Health check endpoint returned HTTP 200"
-          else
-            echo "Test failed: Health check endpoint did not return HTTP 200"
-            exit 1
-          fi
+   - name: Test health check endpoint
+  run: |
+    # Primeiro teste: Verificar se o código HTTP é 200
+    status=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/catalog/health)
+    if [ "$status" -eq 200 ]; then
+      echo "Test passed: Health check endpoint returned HTTP 200"
+    else
+      echo "Test failed: Health check endpoint did not return HTTP 200"
+      exit 1
+    fi
+
+    # Segundo teste: Verificar se a resposta contém o texto "status ok"
+    response=$(curl -s http://127.0.0.1:5000/catalog/health)
+    if echo "$response" | grep -q "status ok"; then
+      echo "Test passed: Health check endpoint returned Status Ok"
+    else
+      echo "Test failed: Health check endpoint did not return Status OK"
+      exit 1
+    fi
+
