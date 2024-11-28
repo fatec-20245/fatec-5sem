@@ -41,7 +41,7 @@ jobs:
       # Testar o contêiner Docker
       - name: Run container test
         run: |
-          docker run --rm -d -p 3000:3000 --name dummy-service-container dummy-service
+          docker run --rm -d -p 3001:3001 --name dummy-service-container dummy-service
           sleep 5 # Aguarde o serviço iniciar
-          curl -f http://localhost:3000 || (docker logs dummy-service-container && exit 1)
+          curl -f http://localhost:3001 || (docker logs dummy-service-container && exit 1)
           docker stop dummy-service-container
