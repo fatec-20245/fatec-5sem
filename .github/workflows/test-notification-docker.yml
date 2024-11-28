@@ -1,0 +1,28 @@
+name: Notification Test
+
+on:
+  pull_request
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checar o código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Rodar container Docker com a imagem do Node.js
+      - name: Run tests in Docker container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:16  # Imagem oficial do Node.js 16
+          options: --privileged  # Opcional: Pode ser necessário dependendo do seu ambiente.
+          run: |
+            # 3. Instalar dependências
+            cd /workspace/notification  # Ajuste o diretório conforme necessário
+            npm install  # Instalar dependências
+
+            # 4. Rodar os testes
+            npm test  # Ou outro comando que execute os testes
