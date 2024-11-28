@@ -18,10 +18,10 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:16  # Imagem oficial do Node.js 16
-          options: --privileged  # Opcional: Pode ser necessário dependendo do seu ambiente.
+          options: --privileged  # Opcional: Pode ser necessário dependendo do seu ambiente
           run: |
             # 3. Instalar dependências
-            cd /workspace/notification  # Ajuste o diretório conforme necessário
+            cd /github/workspace/notification  # Ajuste para o caminho correto
             npm install  # Instalar dependências
 
             # 4. Rodar os testes
