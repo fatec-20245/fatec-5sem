@@ -1,5 +1,5 @@
 FROM node:20-alpine
-WORKDIR /app
+WORKDIR .
 COPY . .
-RUN yarn install --production
-CMD ["yarn dev"]
+RUN npm install
+CMD ["node", "estoque.js"]
