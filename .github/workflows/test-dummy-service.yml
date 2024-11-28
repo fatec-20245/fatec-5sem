@@ -43,5 +43,5 @@ jobs:
         run: |
           docker run --rm -d -p 3001:3001 --name dummy-service-container dummy-service
           sleep 5 # Aguarde o serviço iniciar
-          curl -f http://localhost:3001 || (docker logs dummy-service-container && exit 1)
+          curl -f http://localhost:3001/dummy/health || (docker logs dummy-service-container && exit 1)
           docker stop dummy-service-container
