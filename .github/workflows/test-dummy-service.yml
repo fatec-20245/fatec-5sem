@@ -4,26 +4,33 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout do código
-      - name: Checkout code
+      # Step 1: Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Configurar o Node.js
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: '16'  # Substitua pela versão necessária
 
-      # Instalar dependências
+      # Step 3: Navigate to the dummy directory
+      - name: Navigate to dummy directory
+        working-directory: ./dummy
+        run: pwd
+
+      # Step 4: Install dependencies
       - name: Install dependencies
+        working-directory: ./dummy
         run: npm install
 
-      # Executar os testes
+      # Step 5: Run tests
       - name: Run tests
+        working-directory: ./dummy
         run: npm test
 
       # Build da imagem Docker
