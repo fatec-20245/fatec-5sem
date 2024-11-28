@@ -23,6 +23,10 @@ app.get('/auth/health', (req, res) => {
 });
 
 // Inicia o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Servidor rodando em http://localhost:${port}`);
+    })
+}
+
+module.exports = app;
