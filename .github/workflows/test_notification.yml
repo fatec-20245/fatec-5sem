@@ -1,12 +1,8 @@
-name: Notification Teste
+name: Notification Test
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  pull_request
+
 
 jobs:
   test:
