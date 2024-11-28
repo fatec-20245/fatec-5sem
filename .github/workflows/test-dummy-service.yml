@@ -4,31 +4,36 @@ on:
   pull_request:
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
+      # Checkout do código
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
+      # Configurar o Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Substitua pela versão necessária
+          node-version: 14
 
-      # Step 3: Navigate to the dummy directory
-      - name: Navigate to dummy directory
-        working-directory: ./dummy
-        run: pwd
-
-      # Step 4: Install dependencies
+      # Instalar dependências
       - name: Install dependencies
-        working-directory: ./dummy
         run: npm install
 
-      # Step 5: Run tests
+      # Executar os testes
       - name: Run tests
-        working-directory: ./dummy
         run: npm test
+
+      # Build da imagem Docker
+      - name: Build Docker image
+        run: docker build -t dummy-service .
+
+      # Testar o contêiner Docker
+      - name: Run container test
+        run: |
+          docker run --rm -d -p 3000:3000 --name dummy-service-container dummy-service
+          sleep 5 # Aguarde o serviço iniciar
+          curl -f http://localhost:3000 || (docker logs dummy-service-container && exit 1)
+          docker stop dummy-service-container
