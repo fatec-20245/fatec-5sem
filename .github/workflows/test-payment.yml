@@ -1,0 +1,57 @@
+name: Go API payment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.23.2
+
+      - name: Build API
+        run: |
+          cd payment
+          go build -o payment .
+
+      - name: Start API
+        run: |
+          cd payment
+          ./payment &
+
+      - name: Wait for server to start
+        run: |
+          for i in {1..10}; do
+            if curl -s http://127.0.0.1:8081/health > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
+
+      - name: Test API response
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8081/health)
+          if [ "$response" == "200" ]; then
+            echo "Status: OK"
+          else
+            echo "API is not returning 200 OK. Status: $response"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Stop API
+        run: killall payment
