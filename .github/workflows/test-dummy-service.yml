@@ -35,6 +35,7 @@ jobs:
 
       # Build da imagem Docker
       - name: Build Docker image
+        working-directory: ./dummy
         run: docker build -t dummy-service .
 
       # Testar o contêiner Docker
