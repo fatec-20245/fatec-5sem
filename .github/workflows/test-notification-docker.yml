@@ -1,7 +1,7 @@
-name: Notification Test
+name: notification test
 
 on:
-  pull_request
+  pull_request:
 
 
 jobs:
@@ -9,20 +9,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checar o código
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # 1. Fazer checkout do código
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # 2. Rodar container Docker com a imagem do Node.js
-      - name: Run tests in Docker container
-        uses: addnab/docker-run-action@v3
-        with:
-          image: node:16  # Imagem oficial do Node.js 16
-          options: --privileged  # Opcional: Pode ser necessário dependendo do seu ambiente
-          run: |
-            # 3. Instalar dependências
-            cd /github/workspace/notification  # Ajuste para o caminho correto
-            npm install  # Instalar dependências
+    # 2. Build da imagem Docker
+    - name: Build Docker Image
+      run: |
+        docker build -t notification-app .
 
-            # 4. Rodar os testes
-            npm test  # Ou outro comando que execute os testes
+    # 3. Executar a aplicação no container
+    - name: Run Docker Container
+      run: |
+        docker run -d -p 3000:3000 --name notification-app notification-app
+
+    # 4. Testar o endpoint
+    - name: Test endpoint
+      run: |
+        sleep 5 # Aguarda o container iniciar
+        curl http://localhost:3000/notification/health
+
+    # 5. Remover o container após os testes
+    - name: Clean up
+      run: |
+        docker stop notification-app
+        docker rm notification-app
