@@ -32,3 +32,16 @@ jobs:
       - name: Run tests
         working-directory: ./dummy
         run: npm test
+
+      # Build da imagem Docker
+      - name: Build Docker image
+        working-directory: ./dummy
+        run: docker build -t dummy-service .
+
+      # Testar o contêiner Docker
+      - name: Run container test
+        run: |
+          docker run --rm -d -p 3001:3001 --name dummy-service-container dummy-service
+          sleep 5 # Aguarde o serviço iniciar
+          curl -f http://localhost:3001/dummy/health || (docker logs dummy-service-container && exit 1)
+          docker stop dummy-service-container
