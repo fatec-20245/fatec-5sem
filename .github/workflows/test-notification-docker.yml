@@ -13,27 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Fazer checkout do código
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # 2. Build da imagem Docker
     - name: Build Docker Image
       run: |
         docker build -t notification-app -f ./notification/Dockerfile ./notification
 
-    # 3. Executar a aplicação no container
     - name: Run Docker Container
       run: |
         docker run -d -p 3000:3000 --name notification-app notification-app
 
-    # 4. Testar o endpoint
     - name: Test endpoint
       run: |
-        sleep 5 # Aguarda o container iniciar
-        curl http://localhost:3000/notification/health
+        for i in {1..10}; do
+          if curl -s http://localhost:3000/notification/health; then
+            echo "Service is up!"
+            exit 0
+          fi
+          echo "Service not ready. Retrying in 2 seconds..."
+          sleep 2
+        done
+        echo "Service did not start in time."
+        exit 1
 
-    # 5. Remover o container após os testes
+    - name: Debug Docker logs
+      run: docker logs notification-app
+
     - name: Clean up
       run: |
         docker stop notification-app
