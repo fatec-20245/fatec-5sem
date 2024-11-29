@@ -19,7 +19,7 @@ app.post('/auth', (req, res) => {
 
 // Endpoint de saúde
 app.get('/auth/health', (req, res) => {
-    res.json({ status: 'ok' });
+    res.status(200).json({ status: 'ok' });
 });
 
 // Inicia o servidor
