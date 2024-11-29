@@ -1,8 +1,12 @@
 name: notification test
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-
+    branches:
+      - main
 
 jobs:
   test:
@@ -16,7 +20,7 @@ jobs:
     # 2. Build da imagem Docker
     - name: Build Docker Image
       run: |
-        docker build -t notification-app .
+        docker build -t notification-app -f ./notification/Dockerfile ./notification
 
     # 3. Executar a aplicação no container
     - name: Run Docker Container
