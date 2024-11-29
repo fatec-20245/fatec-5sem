@@ -1,0 +1,18 @@
+# Usar uma imagem base do Node.js
+FROM node:16
+
+# Definir o diretório de trabalho no container
+WORKDIR /app
+
+# Copiar o package.json e instalar dependências
+COPY package.json .
+RUN npm install
+
+# Copiar o restante dos arquivos
+COPY . .
+
+# Expor a porta 3000
+EXPOSE 3000
+
+# Comando para iniciar a aplicação
+CMD ["npm", "start"]
