@@ -24,21 +24,24 @@ jobs:
       run: |
         docker run -d -p 3000:3000 --name notification-app notification-app
 
+    - name: Verify Docker Container
+      run: docker ps -a
+
+    - name: Inspect Docker Logs
+      run: docker logs notification-app
+
     - name: Test endpoint
       run: |
-        for i in {1..10}; do
+        for i in {1..15}; do
           if curl -s http://localhost:3000/notification/health; then
             echo "Service is up!"
             exit 0
           fi
-          echo "Service not ready. Retrying in 2 seconds..."
-          sleep 2
+          echo "Service not ready. Retrying in 3 seconds..."
+          sleep 3
         done
         echo "Service did not start in time."
         exit 1
-
-    - name: Debug Docker logs
-      run: docker logs notification-app
 
     - name: Clean up
       run: |
