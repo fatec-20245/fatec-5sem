@@ -1,0 +1,58 @@
+name: Testing auth service
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Substitua pela versão necessária
+
+      # Step 3: Navigate to the dummy directory
+      - name: Navigate to auth directory
+        working-directory: ./auth
+        run: pwd
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        working-directory: ./auth
+        run: npm install
+
+
+      - name: Run application
+        working-directory: ./auth
+        run: yarn dev
+
+        # Verificar se o servidor está rodando
+      - name: Wait for server to start
+          run: |
+            for i in {1..10}; do
+              if curl -s http://127.0.0.1:3000/auth/health > /dev/null; then
+                echo "Status Ok!"
+                break
+              fi
+              echo "Waiting for server..."
+              sleep 5
+            done
+
+      # Testar o endpoint /cart/health
+      - name: Test health check endpoint
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/auth/health)
+          if [ "$status" -eq 200 ]; then
+            echo "Test passed: Health check endpoint returned HTTP 200"
+          else
+            echo "Test failed: Health check endpoint did not return HTTP 200"
+            exit 1
+          fi
+
